@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(glab VERSION 0.1.0 LANGUAGES C CXX)
+set(PROJECT_NAME glab)
+project(${PROJECT_NAME})
 
-add_executable(glab main.cpp)
+add_executable(${PROJECT_NAME} main.cpp)
 
+add_subdirectory(external/glfw)
+target_link_libraries(${PROJECT_NAME} glfw) 
