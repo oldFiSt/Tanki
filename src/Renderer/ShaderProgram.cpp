@@ -1,65 +1,61 @@
-#include"ShaderProgram.h"
+#include "ShaderProgram.h"
+#include <iostream>
 
-#include<iostream>
-
-namespace Renderer {
+namespace Renderer{
     ShaderProgram::ShaderProgram(const std::string& vertexShader, const std::string& fragmentShader)
     {
-        GLuint vertexShaderID;
-        if (!createShader(vertexShader, GL_VERTEX_SHADER, vertexShaderID))
+        GLuint vertexShaderId;
+        if(!createShader(vertexShader, GL_VERTEX_SHADER, vertexShaderId))
         {
-            std::cerr<<"VERTEX SHADER compile time error"<<std::endl;
+            std::cerr << "VERTEX SHADER compile time error " << std::endl;
             return;
         }
-
-        GLuint fragmentShaderID;
-        if (!createShader(fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderID))
+        GLuint fragmentShaderId;
+        if(!createShader(fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderId))
         {
-            std::cerr<<"FRAGMENT SHADER compile time error"<<std::endl;
-            glDeleteShader(vertexShaderID);
+            std::cerr << "FRAGMENT SHADER compile time error " << std::endl;
+            glDeleteShader(vertexShaderId);
             return;
         }
 
         m_ID = glCreateProgram();
-        glAttachShader(m_ID, vertexShaderID);
-        glAttachShader(m_ID, fragmentShaderID);
+        glAttachShader(m_ID, vertexShaderId);
+        glAttachShader(m_ID, fragmentShaderId);
         glLinkProgram(m_ID);
-
+        
         GLint success;
         glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
         if (!success)
         {
-            GLchar infoLog[1024];
-            glGetShaderInfoLog(m_ID, 1024, nullptr, infoLog);
-            std::cerr<<"ERROR::SHADER: Link time error:\n"<<infoLog<<std::endl;
+            GLchar Infolog [1024];
+            glGetShaderInfoLog(m_ID, 1024, nullptr, Infolog);
+            std::cerr<<"ERROR::SHADER: Link time error :\n" << Infolog << std::endl;
         }
         else
         {
             m_isCompiled = true;
         }
 
-        glDeleteShader(vertexShaderID);
-        glDeleteShader(fragmentShaderID);
+        glDeleteShader(vertexShaderId);
+        glDeleteShader(fragmentShaderId);
     }
-
-
+    
     bool ShaderProgram::createShader(const std::string& source,const GLenum shaderType, GLuint& shaderID)
     {
         shaderID = glCreateShader(shaderType);
         const char* code = source.c_str();
-        glShaderSource(shaderID, 1, &code, nullptr);
+        glShaderSource(shaderID, 1 , &code, nullptr);
         glCompileShader(shaderID);
 
         GLint success;
         glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            GLchar infoLog[1024];
-            glGetShaderInfoLog(shaderID, 1024, nullptr, infoLog);
-            std::cerr<<"ERROR::SHADER: Compile time error:\n"<<infoLog<<std::endl;
+        if (!success){
+            GLchar Infolog [1024];
+            glGetShaderInfoLog(shaderID, 1024, nullptr, Infolog);
+            std::cerr<<"ERROR::SHADER: Compile time error :\n" << Infolog << std::endl;
             return false;
         }
-        return true;
+        return true;    
     }
 
     ShaderProgram::~ShaderProgram()
@@ -90,5 +86,5 @@ namespace Renderer {
 
         shaderProgram.m_ID = 0;
         shaderProgram.m_isCompiled = false;
-    }
+    } 
 }

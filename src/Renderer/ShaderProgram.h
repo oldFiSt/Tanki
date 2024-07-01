@@ -1,7 +1,8 @@
-#pragma once
+#pragma once //чтобы файл подгружался 1 раз 
 
 #include<glad/glad.h>
 #include<string>
+
 namespace Renderer {
     class ShaderProgram {
     public:
@@ -10,9 +11,9 @@ namespace Renderer {
         bool isCompiled() const { return m_isCompiled; }
         void use() const;
 
-        ShaderProgram() = delete;
-        ShaderProgram(ShaderProgram&) = delete;
-        ShaderProgram& operator=(const ShaderProgram&) = delete;
+        ShaderProgram() = delete; //чтобы нельзя было создать пустой шейдер
+        ShaderProgram(ShaderProgram&) = delete;//чтобы нельзя было приравнять шейдеры
+        ShaderProgram& operator=(const ShaderProgram&) = delete;//чтобы нельзя было приравнять шейдеры
         ShaderProgram& operator=(ShaderProgram&& shaderProgram) noexcept;
         ShaderProgram(ShaderProgram&& shaderProgram) noexcept;
 
@@ -20,5 +21,5 @@ namespace Renderer {
         bool createShader(const std::string& source,const GLenum shaderType, GLuint& shaderID);
         bool m_isCompiled = false;
         GLuint m_ID = 0;
-};
+    };
 }
