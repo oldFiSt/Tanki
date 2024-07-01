@@ -92,8 +92,8 @@ int main(void)
 
     glClearColor(1, 1, 0, 1);
 
-    std::string vertex_shader(vertex_shader);
-    std::string fragment_shader(fragment_shader);
+    std::string vertex_Shader(vertex_shader);
+    std::string fragment_Shader(fragment_shader);
     Renderer::ShaderProgram shaderProgram(vertex_shader, fragment_shader);
     if (!shaderProgram.isCompiled())
     {
