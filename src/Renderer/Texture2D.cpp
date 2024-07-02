@@ -24,9 +24,9 @@ namespace  Renderer{
     
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);//Приблмжение объекта, filter - это усреднённое значение(сглаженное), для 3D нужно было бы уже указывать определённые уровни фильтрации
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);//Не приближаемся, а удаляем объект
+        glGenerateMipmap(GL_TEXTURE_2D);//Все уровни Mipmap автоматически сгенерируются в видеокарте
         glBindTexture(GL_TEXTURE_2D, 0);
 
     }
@@ -42,7 +42,7 @@ namespace  Renderer{
         return *this;
     }
 
-    Texture2D::Texture2D(Texture2D&& texture2d)
+    Texture2D::Texture2D(Texture2D&& texture2d)//Конструктор
     {
         m_ID = texture2d.m_ID;
         texture2d.m_ID = 0;
@@ -51,12 +51,12 @@ namespace  Renderer{
         m_height = texture2d.m_height;
     }
 
-    Texture2D::~Texture2D()
+    Texture2D::~Texture2D()//Деструктрр
     {
         glDeleteTextures(1, &m_ID);
     }
 
-    void Texture2D::bind() const
+    void Texture2D::bind() const//Делаем нашу текстуру активной
     {
         glBindTexture(GL_TEXTURE_2D, m_ID);
     }

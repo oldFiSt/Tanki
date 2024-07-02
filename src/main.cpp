@@ -7,19 +7,19 @@
 #include"Resources/ResourceManager.h"
 #include"Renderer/Texture2D.h"
 
-GLfloat point[] = {
+GLfloat point[] = {//Позиция
      0.0f,  0.5f, 0.0f,
      0.5f, -0.5f, 0.0f,
     -0.5f, -0.5f, 0.0f
 };
 
-GLfloat colors[] = {
+GLfloat colors[] = {//Цвета
     1.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f,
     0.0f, 0.0f, 1.0f
 };
 
-GLfloat texCoord[] = {
+GLfloat texCoord[] = {//Координаты текстур для каждого вертекса
     0.5f, 1.0f,
     1.0f, 0.0f,
     0.0f, 0.0f
