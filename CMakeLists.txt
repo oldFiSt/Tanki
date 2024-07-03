@@ -10,6 +10,8 @@ add_executable(${PROJECT_NAME}
     src/Renderer/ShaderProgram.h
     src/Renderer/Texture2D.cpp
     src/Renderer/Texture2D.h
+    src/Renderer/Sprite.cpp
+    src/Renderer/Sprite.h
     src/Resources/ResourceManager.cpp
     src/Resources/ResourceManager.h
     src/Resources/stb_image.h
@@ -27,6 +29,8 @@ target_link_libraries(${PROJECT_NAME} glfw)
 
 add_subdirectory(external/glad)
 target_link_libraries(${PROJECT_NAME} glad)
+
+include_directories(C:/Project/Tanki/external)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)      
 
