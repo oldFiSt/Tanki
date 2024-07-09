@@ -7,7 +7,7 @@
 
 class Tank;
 
-class Game{
+class Game{//Отображает игровой мир
 public:
     Game(const glm::ivec2& windowSize);
     ~Game();
@@ -26,6 +26,6 @@ private:
     };
 
     glm::ivec2 m_windowSize;
-    EGameState m_eCurrentGameState;
-    std::unique_ptr<Tank> m_pTank;
+    EGameState m_eCurrentGameState;//Состояние нашего игрового мира
+    std::unique_ptr<Tank> m_pTank;//Игровой объект(пока что только один)
 }; 

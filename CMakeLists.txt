@@ -14,9 +14,21 @@ add_executable(${PROJECT_NAME}
     src/Renderer/Sprite.h
     src/Renderer/AnimatedSprite.h
     src/Renderer/AnimatedSprite.cpp
+    src/Renderer/VertexBuffer.cpp
+    src/Renderer/VertexBuffer.h
+    src/Renderer/IndexBuffer.cpp
+    src/Renderer/IndexBuffer.h
+    src/Renderer/VertexArray.h
+    src/Renderer/VertexArray.cpp
+    src/Renderer/VertexBufferLayout.cpp
+    src/Renderer/VertexBufferLayout.h
+    src/Renderer/Renderer.cpp
+    src/Renderer/Renderer.h
+
     src/Resources/ResourceManager.cpp
     src/Resources/ResourceManager.h
     src/Resources/stb_image.h
+
     src/Game/Game.h
     src/Game/Game.cpp
     src/Game/Tank.h
@@ -36,7 +48,9 @@ target_link_libraries(${PROJECT_NAME} glfw)
 add_subdirectory(external/glad)
 target_link_libraries(${PROJECT_NAME} glad)
 
-include_directories(D:/Tanki/external)
+include_directories(C:/Project/Tanki/external)
+
+include_directories(C:/Project/Tanki/external/rapidjson/include)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)      
 

@@ -7,6 +7,7 @@
 
 #include"Game/Game.h"
 #include"Resources/ResourceManager.h"
+#include"Renderer/Renderer.h"
 
 glm::ivec2 g_windowSize(640, 480);
 Game g_game(g_windowSize);
@@ -16,7 +17,7 @@ void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
     g_windowSize.x = width;
     g_windowSize.y = height;
-    glViewport(0, 0, width, height); //для растягивания окошка 
+    RenderEngine::Renderer::setViewport(width, height);//для растягивания окошка 
 }
 
 void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int mode)
@@ -61,11 +62,10 @@ int main(int argc, char** argv)
         std::cout << "Can't load GLAD!" << std::endl;
     }
 
-    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
-    std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "Renderer: " << RenderEngine::Renderer::getRendererStr() << std::endl;
+    std::cout << "OpenGL version: " << RenderEngine::Renderer::getVersionStr() << std::endl;
 
-    glClearColor(0, 0, 0, 1);
-
+    RenderEngine::Renderer::setClearColor(0, 0, 0, 1);
     
     {
         ResourceManager::setExecutablePath(argv[0]);
@@ -73,22 +73,23 @@ int main(int argc, char** argv)
 
         auto lastTime = std::chrono::high_resolution_clock::now();
         /* Loop until the user closes the window */
-        while (!glfwWindowShouldClose(pWindow))
+        while (!glfwWindowShouldClose(pWindow))//Игровой цикл(действует, пока мы не закрыли окно)
         {
+            /* Poll for and process events */
+            glfwPollEvents();//следит за движением курсора, нажатием клавиш, закрытие окна, т.е обрабатываются всевозможные нажатия клавиш
+
             auto currentTime = std::chrono::high_resolution_clock::now();
             uint64_t duration = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - lastTime).count();
             lastTime = currentTime;
             g_game.update(duration);
 
             /* Render here */
-            glClear(GL_COLOR_BUFFER_BIT);
+            RenderEngine::Renderer::clear();//Очищаем экран
 
-            g_game.render();
+            g_game.render();//рисуем картинку нашего игрового мира 
 
             /* Swap front and back buffers */
-            glfwSwapBuffers(pWindow);
-
-            glfwPollEvents();//следит за движением курсора, нажатием клавиш, закрытие окна                                              
+            glfwSwapBuffers(pWindow);//Меняем буфер, который выводит картинку на монитор               
         }
         ResourceManager::unloadAllResources();
     }

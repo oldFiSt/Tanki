@@ -4,7 +4,7 @@
 #include<map>
 #include<vector>
 //наследуется от класса Sprite
-namespace Renderer { 
+namespace RenderEngine { 
 
 
     class AnimatedSprite : public Sprite {
