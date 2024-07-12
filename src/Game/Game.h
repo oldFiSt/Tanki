@@ -6,6 +6,7 @@
 #include <memory>
 
 class Tank;
+class Level;
 
 class Game{//Отображает игровой мир
 public:
@@ -28,4 +29,5 @@ private:
     glm::ivec2 m_windowSize;
     EGameState m_eCurrentGameState;//Состояние нашего игрового мира
     std::unique_ptr<Tank> m_pTank;//Игровой объект(пока что только один)
+    std::unique_ptr<Level> m_plevel;
 }; 
