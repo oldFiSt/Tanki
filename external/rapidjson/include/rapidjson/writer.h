@@ -1,6 +1,6 @@
 // Tencent is pleased to support the open source community by making RapidJSON available.
 // 
-// Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip.
+// Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip. All rights reserved.
 //
 // Licensed under the MIT License (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -67,7 +67,6 @@ enum WriteFlag {
     kWriteNoFlags = 0,              //!< No flags are set.
     kWriteValidateEncodingFlag = 1, //!< Validate encoding of JSON strings.
     kWriteNanAndInfFlag = 2,        //!< Allow writing of Infinity, -Infinity and NaN.
-    kWriteNanAndInfNullFlag = 4,    //!< Allow writing of Infinity, -Infinity and NaN as null.
     kWriteDefaultFlags = RAPIDJSON_WRITE_DEFAULT_FLAGS  //!< Default write flags. Can be customized by defining RAPIDJSON_WRITE_DEFAULT_FLAGS
 };
 
@@ -349,13 +348,8 @@ protected:
 
     bool WriteDouble(double d) {
         if (internal::Double(d).IsNanOrInf()) {
-            if (!(writeFlags & kWriteNanAndInfFlag) && !(writeFlags & kWriteNanAndInfNullFlag))
+            if (!(writeFlags & kWriteNanAndInfFlag))
                 return false;
-            if (writeFlags & kWriteNanAndInfNullFlag) {
-                PutReserve(*os_, 4);
-                PutUnsafe(*os_, 'n'); PutUnsafe(*os_, 'u'); PutUnsafe(*os_, 'l'); PutUnsafe(*os_, 'l');
-                return true;
-            }
             if (internal::Double(d).IsNan()) {
                 PutReserve(*os_, 3);
                 PutUnsafe(*os_, 'N'); PutUnsafe(*os_, 'a'); PutUnsafe(*os_, 'N');
@@ -554,11 +548,6 @@ inline bool Writer<StringBuffer>::WriteDouble(double d) {
         // Note: This code path can only be reached if (RAPIDJSON_WRITE_DEFAULT_FLAGS & kWriteNanAndInfFlag).
         if (!(kWriteDefaultFlags & kWriteNanAndInfFlag))
             return false;
-        if (kWriteDefaultFlags & kWriteNanAndInfNullFlag) {
-            PutReserve(*os_, 4);
-            PutUnsafe(*os_, 'n'); PutUnsafe(*os_, 'u'); PutUnsafe(*os_, 'l'); PutUnsafe(*os_, 'l');
-            return true;
-        }
         if (internal::Double(d).IsNan()) {
             PutReserve(*os_, 3);
             PutUnsafe(*os_, 'N'); PutUnsafe(*os_, 'a'); PutUnsafe(*os_, 'N');

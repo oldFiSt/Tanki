@@ -1,37 +1,42 @@
-#pragma once 
+#pragma once
 
 #include <glm/vec2.hpp>
 #include <memory>
 
 #include "IGameObject.h"
 #include "../../Renderer/SpriteAnimator.h"
+#include "../../System/Timer.h"
 
 namespace RenderEngine {
     class Sprite;
 }
+class Bullet;
 
-
-class Tank : public IGameObject{
+class Tank : public IGameObject {
 public:
-    //для ориентации танка 
-    enum class EOrientation {
+
+    enum class EOrientation : uint8_t {
         Top,
         Bottom,
         Left,
         Right
     };
 
-    Tank(const float velocity,
+    Tank(const double maxVelocity,
          const glm::vec2& position,
-         const glm::vec2& size);
-     
+         const glm::vec2& size,
+         const float layer);
+
     void render() const override;
     void setOrientation(const EOrientation eOrientation);
-    void move(const bool move);//для отслеживания нажатия кнопки 
-    void update(const uint64_t delta) override;
-    
+    void update(const double delta) override;
+    double getMaxVelocity() { return m_maxVelocity; }//Функция, которая будет возвращать максимальную скорость
+    void setVelocity(const double velocity) override;
+    void fire();
+
 private:
-    EOrientation m_eOrientation; //для вычисления куда будет лететь снаряд 
+    EOrientation m_eOrientation;
+    std::shared_ptr<Bullet> m_pCurrentBullet;
     std::shared_ptr<RenderEngine::Sprite> m_pSprite_top;
     std::shared_ptr<RenderEngine::Sprite> m_pSprite_bottom;
     std::shared_ptr<RenderEngine::Sprite> m_pSprite_left;
@@ -40,8 +45,17 @@ private:
     RenderEngine::SpriteAnimator m_spriteAnimator_bottom;
     RenderEngine::SpriteAnimator m_spriteAnimator_left;
     RenderEngine::SpriteAnimator m_spriteAnimator_right;
-    
-    bool m_move;
-    float m_velocity;// скорость 
-    glm::vec2 m_moveOffset;//вектор по которому будет двигаться танк 
+
+    std::shared_ptr<RenderEngine::Sprite> m_pSprite_respawn;
+    RenderEngine::SpriteAnimator m_spriteAnimator_respawn;
+
+    std::shared_ptr<RenderEngine::Sprite> m_pSprite_shield;
+    RenderEngine::SpriteAnimator m_spriteAnimator_shield;
+
+    Timer m_respawnTimer;
+    Timer m_shieldTimer;
+
+    double m_maxVelocity;
+    bool m_isSpawning;
+    bool m_hasShield;
 };

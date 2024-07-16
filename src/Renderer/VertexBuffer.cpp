@@ -2,7 +2,7 @@
 
 namespace RenderEngine {
     VertexBuffer::VertexBuffer()
-        :m_id(0)
+        : m_id(0)
     {
     }
 
@@ -11,7 +11,7 @@ namespace RenderEngine {
         glDeleteBuffers(1, &m_id);
     }
 
-    VertexBuffer& VertexBuffer::operator = (VertexBuffer&& vertexBuffer) noexcept
+    VertexBuffer& VertexBuffer::operator=(VertexBuffer&& vertexBuffer) noexcept
     {
         m_id = vertexBuffer.m_id;
         vertexBuffer.m_id = 0;
@@ -46,9 +46,4 @@ namespace RenderEngine {
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
-
-
-
-
-
 }

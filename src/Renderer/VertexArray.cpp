@@ -11,7 +11,7 @@ namespace RenderEngine {
         glDeleteVertexArrays(1, &m_id);
     }
 
-    VertexArray& VertexArray::operator = (VertexArray&& vertexArray) noexcept
+    VertexArray& VertexArray::operator=(VertexArray&& vertexArray) noexcept
     {
         m_id = vertexArray.m_id;
         vertexArray.m_id = 0;
@@ -50,9 +50,4 @@ namespace RenderEngine {
         }
         m_elementsCount += static_cast<unsigned int>(layoutElements.size());
     }
-
-
-
-
-
 }

@@ -1,17 +1,18 @@
-#pragma once 
+#pragma once
 
-#include"IGameObject.h"
-#include<memory>
-#include<array>
+#include "IGameObject.h"
 
-namespace RenderEngine{
+#include <array>
+#include <memory>
+
+namespace RenderEngine {
     class Sprite;
 }
 
-class BrickWall : public IGameObject{
+class BrickWall : public IGameObject {
 public:
 
-    enum class EBrickWallType{
+    enum class EBrickWallType : uint8_t {
         All,
         Top,
         Bottom,
@@ -23,7 +24,7 @@ public:
         BottomRight
     };
 
-    enum class EBrickState {
+    enum class EBrickState : uint8_t {
         All = 0,
         TopLeft,
         TopRight,
@@ -42,20 +43,21 @@ public:
         Destroyed
     };
 
-    enum class EBrickLocation{
+    enum class EBrickLocation : uint8_t {
         TopLeft,
         TopRight,
         BottomLeft,
         BottomRight
     };
 
-    BrickWall(const EBrickWallType eBrickWallType, const glm::vec2& position, const glm::vec2& size, const float rotation);
+    BrickWall(const EBrickWallType eBrickWallType, const glm::vec2& position, const glm::vec2& size, const float rotation, const float layer);
     virtual void render() const override;
-    virtual void update(const uint64_t delta) override;
+    virtual void update(const double delta) override;
 
 private:
     void renderBrick(const EBrickLocation eBrickLocation) const;
-    
+
     std::array<EBrickState, 4> m_eCurrentBrickState;
     std::array<std::shared_ptr<RenderEngine::Sprite>, 15> m_sprites;
+    std::array<glm::vec2, 4> m_blockOffsets;
 };

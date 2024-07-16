@@ -1,4 +1,4 @@
-#include"Renderer.h"
+#include "Renderer.h"
 
 namespace RenderEngine {
 
@@ -11,29 +11,40 @@ namespace RenderEngine {
         glDrawElements(GL_TRIANGLES, indexBuffer.getCount(), GL_UNSIGNED_INT, nullptr);
     }
 
-    void Renderer::setClearColor(float r, float g, float b, float a)
+    void Renderer::setClearColor(const float r, const float g, const float b, const float a)
     {
         glClearColor(r, g, b, a);
     }
 
-    void Renderer::clear()
+    void Renderer::setDepthTest(const bool enable)
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        if (enable)
+        {
+            glEnable(GL_DEPTH_TEST);
+        }
+        else
+        {
+            glDisable(GL_DEPTH_TEST);
+        }
     }
 
-    void Renderer::setViewport(unsigned int width, unsigned int height, unsigned int leftOffset, unsigned int bottomOffset)
+    void Renderer::clear()
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void Renderer::setViewport(const unsigned int width, const unsigned int height, const unsigned int leftOffset, const unsigned int bottomOffset)
     {
         glViewport(leftOffset, bottomOffset, width, height);
     }
 
     std::string Renderer::getRendererStr()
     {
-        return (char*)glGetString(GL_RENDERER);
+        return (const char*)glGetString(GL_RENDERER);
     }
 
     std::string Renderer::getVersionStr()
     {
-        return (char*)glGetString(GL_VERSION);
+        return (const char*)glGetString(GL_VERSION);
     }
-
 }

@@ -1,33 +1,34 @@
 #pragma once
- 
+
 #include <glm/vec2.hpp>
 #include <array>
-#include <cstdint>
 #include <memory>
 
 class Tank;
 class Level;
 
-class Game{//Отображает игровой мир
+class Game {
 public:
     Game(const glm::ivec2& windowSize);
     ~Game();
 
     void render();
-    void update(const uint64_t delta);
-    void setkey(const int key,const int action);
+    void update(const double delta);
+    void setKey(const int key, const int action);
     bool init();
-    
-private:
-    std::array<bool, 349> m_keys;//для хранения нажатых кнопок 
+    size_t getCurrentLevelWidth() const;
+    size_t getCurrentLevelHeight() const;
 
-    enum class EGameState{
+private:
+    std::array<bool, 349> m_keys;
+
+    enum class EGameState {
         Active,
         Pause
     };
 
     glm::ivec2 m_windowSize;
-    EGameState m_eCurrentGameState;//Состояние нашего игрового мира
-    std::unique_ptr<Tank> m_pTank;//Игровой объект(пока что только один)
-    std::unique_ptr<Level> m_plevel;
-}; 
+    EGameState m_eCurrentGameState;
+    std::shared_ptr<Tank> m_pTank;
+    std::shared_ptr<Level> m_pLevel;
+};

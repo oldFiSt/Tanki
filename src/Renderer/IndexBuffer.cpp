@@ -2,8 +2,8 @@
 
 namespace RenderEngine {
     IndexBuffer::IndexBuffer()
-        :m_id(0)
-        ,m_count(0)
+        : m_id(0)
+        , m_count(0)
     {
     }
 
@@ -12,7 +12,7 @@ namespace RenderEngine {
         glDeleteBuffers(1, &m_id);
     }
 
-    IndexBuffer& IndexBuffer::operator = (IndexBuffer&& indexBuffer) noexcept
+    IndexBuffer& IndexBuffer::operator=(IndexBuffer&& indexBuffer) noexcept
     {
         m_id = indexBuffer.m_id;
         indexBuffer.m_id = 0;
@@ -21,7 +21,7 @@ namespace RenderEngine {
         return *this;
     }
 
-    IndexBuffer::IndexBuffer(IndexBuffer&& indexBuffer) noexcept//Конструктор
+    IndexBuffer::IndexBuffer(IndexBuffer&& indexBuffer) noexcept
     {
         m_id = indexBuffer.m_id;
         indexBuffer.m_id = 0;
@@ -46,9 +46,4 @@ namespace RenderEngine {
     {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
-
-
-
-
-
 }
