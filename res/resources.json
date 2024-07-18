@@ -10,7 +10,7 @@
 	"textureAtlases" : [
         {
 			"name" 				: "mapTextureAtlas_8x8",
-			"filePath"  		: "res/textures/map_8x82.png",
+			"filePath"  		: "res/textures/texturs2.png",
 			"subTextureWidth"   : 8,
 			"subTextureHeight"  : 8,
 			"subTextures" : [
@@ -93,7 +93,7 @@
 		
 		{
 			"name" 				: "tanksTextureAtlas",
-			"filePath" 			: "res/textures/tanks.png",
+			"filePath" 			: "res/textures/new_tank.png",
 			"subTextureWidth" 	: 16,
 			"subTextureHeight" 	: 16,
 			"subTextures" : [
@@ -370,6 +370,16 @@
 				"redType8_right1",
 				"redType8_right2"
 			]
+		},
+
+		{
+			"name" : "menu_128x64",
+			"filePath" : "res/textures/menu_128x64.png",
+			"subTextureWidth" : 128,
+			"subTextureHeight" : 64,
+			"subTextures" : [
+				"menu"
+			]
 		}
 	],
 
@@ -601,15 +611,19 @@
 			"name" 				: "explosion",
 			"textureAtlas" 		: "mapTextureAtlas_16x16",
 			"shader" 			: "spriteShader",
-			"initialSubTexture" : "explosion1",
+			"initialSubTexture" : "explosion1",			
 			"frames" : [
                 {
                     "subTexture" : "explosion1",
-                    "duration"   : 500
+                    "duration"   : 100
                 },
                 {
                     "subTexture" : "explosion2",
-                    "duration"   : 500
+                    "duration"   : 100
+                },
+				{
+                    "subTexture" : "explosion3",
+                    "duration"   : 100
                 }
             ]
 		},
@@ -721,6 +735,12 @@
             "initialSubTexture" : "bonus_gun"
         },
         
+		{
+			"name"              : "menu",
+            "textureAtlas"      : "menu_128x64",
+            "shader"            : "spriteShader",
+            "initialSubTexture" : "menu"
+		},
         
         
         {
@@ -791,7 +811,12 @@
             ]
 		}
 	],
-	
+	"start_screen" : [
+		"8CC4FC4F8F48F48F8",
+		"FA5FE1B4AF5A6FAFA",
+		"FA5F0CE5A35A34AFE",
+		"FA5F0FA5AF5AF5A6A"
+	],
 	"levels" : [
 		{
 			"description" : [

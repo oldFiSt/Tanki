@@ -93,6 +93,7 @@
         "xlocnum": "cpp",
         "xloctime": "cpp",
         "xtree": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "unordered_set": "cpp"
     }
 }
