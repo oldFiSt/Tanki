@@ -8,7 +8,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace RenderEngine {
-
+    /// @brief Конструктор инициализирует объект спрайта, который представляет изображение, используя текстуру, шейдерную программу и координаты вершин.
+    /// @param pTexture указатель на объект текстуры, который будет использоваться спрайтом.
+    /// @param initialSubTexture имя под-текстуры, которую нужно использовать.
+    /// @param pShaderProgram указатель на шейдерную программу, которая будет применяться к спрайту.
     Sprite::Sprite(std::shared_ptr<Texture2D> pTexture,
                    std::string initialSubTexture,
                    std::shared_ptr<ShaderProgram> pShaderProgram)
@@ -63,6 +66,11 @@ namespace RenderEngine {
     {
     }
 
+    /// @brief функция для отрисовки спрайта на экране, используя представленные параметры
+    /// @param position позиция в игре 
+    /// @param size размер
+    /// @param rotation угол поворота
+    /// @param layer слой рендеринга
     void Sprite::render(const glm::vec2& position, const glm::vec2& size, const float rotation, const float layer, const size_t frameId) const
     {
         if (m_lastFrameId != frameId)
@@ -99,16 +107,23 @@ namespace RenderEngine {
         Renderer::draw(m_vertexArray, m_indexBuffer, *m_pShaderProgram);
     }
 
+    /// @brief функция для добалвение кадров анимации спрайтов, используя вектор описания кадров
+    /// @param framesDescriptions вектор описания кадров
     void Sprite::insertFrames(std::vector<FrameDescription> framesDescriptions)
     {
         m_framesDescriptions = std::move(framesDescriptions);
     }
 
+    /// @brief функция для подсчета продолжительности кадра анимации спрайта
+    /// @param frameId индекс кадра для которого нужно получить продолжительность 
+    /// @return возвращает продолжительность  определенного кадра анимации спрайта 
     double Sprite::getFrameDuration(const size_t frameId) const
     {
         return m_framesDescriptions[frameId].duration;
     }
 
+    /// @brief функция для подсчета количества кадров которые содержит спрайт
+    /// @return возвращает количество кадров которые содержит спрайт
     size_t Sprite::getFramesCount() const
     {
         return m_framesDescriptions.size();

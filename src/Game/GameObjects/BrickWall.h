@@ -52,7 +52,8 @@ public:
 
     BrickWall(const EBrickWallType eBrickWallType, const glm::vec2& position, const glm::vec2& size, const float rotation, const float layer);
     virtual void render() const override;
-    
+
+
 private:
     void renderBrick(const EBrickLocation eBrickLocation) const;
     static EBrickState getBrickStateAfterCollision(const EBrickState currentState, const Physics::ECollisionDirection direction);
@@ -60,7 +61,7 @@ private:
     void onCollisionCallback(const EBrickLocation location, const IGameObject& object, const Physics::ECollisionDirection direction);
 
     std::array<Physics::Collider*, 4> m_brickLocationToColliderMap;
-    
+
     std::array<EBrickState, 4> m_eCurrentBrickState;
     std::array<std::shared_ptr<RenderEngine::Sprite>, 15> m_sprites;
     std::array<glm::vec2, 4> m_blockOffsets;

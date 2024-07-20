@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-set(PROJECT_NAME BattleCity)
+set(PROJECT_NAME TANKI)
 project(${PROJECT_NAME})
 
 add_executable(${PROJECT_NAME} 
@@ -39,7 +39,7 @@ add_executable(${PROJECT_NAME}
 	
 	src/System/Timer.cpp
 	src/System/Timer.h
-
+	
 	src/Physics/PhysicsEngine.cpp
 	src/Physics/PhysicsEngine.h
 	
@@ -61,9 +61,14 @@ add_executable(${PROJECT_NAME}
 	src/Game/GameObjects/Eagle.h
 	src/Game/GameObjects/Border.cpp
 	src/Game/GameObjects/Border.h
-	src/Game/GameObjects/Bullet.cpp
+    src/Game/GameObjects/Bullet.cpp
 	src/Game/GameObjects/Bullet.h
+	
+	
+	src/Game/AIComponent.cpp
+	src/Game/AIComponent.h
 )
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
@@ -78,7 +83,8 @@ target_link_libraries(${PROJECT_NAME} glfw)
 add_subdirectory(external/glad)
 target_link_libraries(${PROJECT_NAME} glad)
 
-include_directories(external/glm)
+add_subdirectory(external/glm)
+target_link_libraries(${PROJECT_NAME} glm)
 
 include_directories(external/rapidjson/include)
 

@@ -12,6 +12,12 @@ namespace RenderEngine {
 
 class Game {
 public:
+
+    enum class EGameMode {
+        OnePlayer,
+        TwoPlayers
+    };
+
     Game(const glm::uvec2& windowSize);
     ~Game();
 
@@ -21,7 +27,8 @@ public:
     bool init();
     unsigned int getCurrentWidth() const;
     unsigned int getCurrentHeight() const;
-    void startNewLevel(const size_t level);
+    void startNewLevel(const size_t level, const EGameMode eGameMode);//const EGameMode eGameMode - это тип игры(для одного или двух игроков)
+    void nextLevel(const EGameMode eGameMode);//Функция, которая загружвет новый уровень 
     void updateViewport();
     void setWindowSize(const glm::uvec2& windowSize);
 
@@ -32,7 +39,7 @@ private:
         Level,
         Pause,
         Scores,
-        Gameover
+        GameOver
     };
 
     std::array<bool, 349> m_keys;
@@ -42,4 +49,5 @@ private:
 
     std::shared_ptr<IGameState> m_pCurrentGameState;
     std::shared_ptr<RenderEngine::ShaderProgram> m_pSpriteShaderProgram;
+    size_t m_currentLevelIndex;
 };

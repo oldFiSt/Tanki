@@ -21,7 +21,7 @@ std::string ResourceManager::m_path;
 std::vector<std::vector<std::string>> ResourceManager::m_levels;
 std::vector<std::string> ResourceManager::m_startScreen;
 
-
+/// @brief функция отвечает за освобождение всех ресурсов, управляемых объектом
 void ResourceManager::unloadAllResources()
 {
     m_shaderPrograms.clear();
@@ -29,12 +29,17 @@ void ResourceManager::unloadAllResources()
     m_sprites.clear();
 }
 
+/// @brief функция устанавливает путь к исполняемому файлу, извлекая директорию из полного пути к исполняемому файлу
+/// @param executablePath строка, представляющая полный путь    
 void ResourceManager::setExecutablePath(const std::string& executablePath)
 {
     size_t found = executablePath.find_last_of("/\\");
     m_path = executablePath.substr(0, found);
 }
 
+/// @brief функция загружает содержимое файла, указанного относительным путем, и возвращает его в виде строки
+/// @param relativeFilePath относительный путь к файлу, который нужно загрузить
+/// @return возвращает путь
 std::string ResourceManager::getFileString(const std::string& relativeFilePath)
 {
     std::ifstream f;
@@ -50,6 +55,11 @@ std::string ResourceManager::getFileString(const std::string& relativeFilePath)
     return buffer.str();
 }
 
+/// @brief Функция загружает шейдерные программы, состоящие из вершинного и фрагментного шейдеров
+/// @param shaderName имя шейдерной программы
+/// @param vertexPath  относительный путь к вершинному шейдеру
+/// @param fragmentPath относительный путь к фрагментному шейдеру
+/// @return возвращает указатель на созданный шейдерный программ.
 std::shared_ptr<RenderEngine::ShaderProgram> ResourceManager::loadShaders(const std::string& shaderName, const std::string& vertexPath, const std::string& fragmentPath)
 {
     std::string vertexString = getFileString(vertexPath);
@@ -79,7 +89,9 @@ std::shared_ptr<RenderEngine::ShaderProgram> ResourceManager::loadShaders(const 
     return nullptr;
 }
 
-
+/// @brief функция предназначена для получения шейдерной программы по её имени из контейнера, который хранит все загруженные шейдерные программы 
+/// @param shaderName Имя шейдерной программы, которую нужно получить.
+/// @return возвращает шейдерную программу
 std::shared_ptr<RenderEngine::ShaderProgram> ResourceManager::getShaderProgram(const std::string& shaderName)
 {
     ShaderProgramsMap::const_iterator it = m_shaderPrograms.find(shaderName);
@@ -91,7 +103,10 @@ std::shared_ptr<RenderEngine::ShaderProgram> ResourceManager::getShaderProgram(c
     return nullptr;
 }
 
-
+/// @brief функция загружает текстуру из файла и сохраняет её в контейнере, который управляет загруженными текстурами
+/// @param textureName имя текстуры, под которым она будет храниться в контейнере
+/// @param texturePath относительный путь к файлу текстуры
+/// @return возвращает текстуру
 std::shared_ptr<RenderEngine::Texture2D> ResourceManager::loadTexture(const std::string& textureName, const std::string& texturePath)
 {
     int channels = 0;
@@ -116,6 +131,10 @@ std::shared_ptr<RenderEngine::Texture2D> ResourceManager::loadTexture(const std:
     return newTexture;
 }
 
+
+/// @brief функция предназначена для получения текстуры по её имени из контейнера, который управляет загруженными текстурами
+/// @param textureName имя текстуры, которую нужно получить
+/// @return возвращает указатель, который управляет временем жизни объекта 
 std::shared_ptr<RenderEngine::Texture2D> ResourceManager::getTexture(const std::string& textureName)
 {
     TexturesMap::const_iterator it = m_textures.find(textureName);
@@ -127,6 +146,12 @@ std::shared_ptr<RenderEngine::Texture2D> ResourceManager::getTexture(const std::
     return nullptr;
 }
 
+/// @brief функция загружает спрайт, связывая его с текстурой и шейдером, а также, при необходимости, с определённой частью текстуры 
+/// @param spriteName имя спрайта, который будет загружен
+/// @param textureName имя текстуры, с которой будет связан спрайт
+/// @param shaderName имя шейдера, который будет использоваться спрайтом
+/// @param subTextureName имя субтекстуры, если спрайт использует часть текстуры
+/// @return возвращает указатель на созданный спрайт
 std::shared_ptr<RenderEngine::Sprite> ResourceManager::loadSprite(const std::string& spriteName,
                                                                   const std::string& textureName,
                                                                   const std::string& shaderName,
@@ -151,6 +176,9 @@ std::shared_ptr<RenderEngine::Sprite> ResourceManager::loadSprite(const std::str
     return newSprite;
 }
 
+/// @brief функция предназначена для получения спрайта по его имени из контейнера, который управляет загруженными спрайтами
+/// @param spriteName имя спрайта, который нужно получить.
+/// @return возвращает указатель который управляет временем жизни объекта
 std::shared_ptr<RenderEngine::Sprite> ResourceManager::getSprite(const std::string& spriteName)
 {
     SpritesMap::const_iterator it = m_sprites.find(spriteName);
@@ -162,6 +190,13 @@ std::shared_ptr<RenderEngine::Sprite> ResourceManager::getSprite(const std::stri
     return nullptr;
 }
 
+/// @brief Функция загружает текстуру-атлас и добавляет в неё субтекстуры, используя предоставленные имена, размеры и координаты
+/// @param textureName имя текстуры 
+/// @param texturePath путь к текстуре 
+/// @param subTextures сабтекстура
+/// @param subTextureWidth ширина сабтекстуры
+/// @param subTextureHeight высоты сабтекстуры
+/// @return возвращает указатель который управляет временем жизни объект
 std::shared_ptr<RenderEngine::Texture2D> ResourceManager::loatTextureAtlas(std::string textureName,
                                                                            std::string texturePath,
                                                                            std::vector<std::string> subTextures,
@@ -192,6 +227,9 @@ std::shared_ptr<RenderEngine::Texture2D> ResourceManager::loatTextureAtlas(std::
     return pTexture;
 }
 
+/// @brief Функция загружает ресурсы из JSON-файла и инициализирует различные элементы, такие как шейдеры, текстурные атласы, спрайты, стартовый экран и уровни игры
+/// @param JSONPath путь к файлу
+/// @return успшеность выполнения загрузки файла
 bool ResourceManager::loadJSONResources(const std::string& JSONPath)
 {
     const std::string JSONString = getFileString(JSONPath);
@@ -281,10 +319,10 @@ bool ResourceManager::loadJSONResources(const std::string& JSONPath)
     auto startScreenIt = document.FindMember("start_screen");
     if (startScreenIt != document.MemberEnd())
     {
-        const auto descriprtionArray = startScreenIt->value.GetArray();
-        m_startScreen.reserve(descriprtionArray.Size());
+        const auto descriptionArray = startScreenIt->value.GetArray();
+        m_startScreen.reserve(descriptionArray.Size());
         size_t maxLength = 0;
-        for (const auto& currentRow : descriprtionArray)
+        for (const auto& currentRow : descriptionArray)
         {
             m_startScreen.emplace_back(currentRow.GetString());
             if (maxLength < m_startScreen.back().length())
@@ -292,6 +330,7 @@ bool ResourceManager::loadJSONResources(const std::string& JSONPath)
                 maxLength = m_startScreen.back().length();
             }
         }
+
         for (auto& currentRow : m_startScreen)
         {
             while (currentRow.length() < maxLength)

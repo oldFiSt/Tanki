@@ -3,10 +3,12 @@
 #include <vector>
 #include <string>
 #include <memory>
-
+#include <set>
 #include <glm/vec2.hpp>
 
-#include"IGameState.h"
+#include "IGameState.h"
+
+#include "../Game.h"
 
 class IGameObject;
 class Tank;
@@ -15,12 +17,12 @@ class Level : public IGameState {
 public:
     static constexpr unsigned int BLOCK_SIZE = 16;
 
-    Level(const std::vector<std::string>& levelDescription);
+    Level(const std::vector<std::string>& levelDescription, const Game::EGameMode eGameMode);
     virtual void render() const override;
     virtual void update(const double delta) override;
     virtual unsigned int getStateWidth() const override;
     virtual unsigned int getStateHeight() const override;
-    virtual void processInput(std::array<bool, 349>& keys) override;
+    virtual void processInput(const std::array<bool, 349>& keys) override;
 
     const glm::ivec2& getPlayerRespawn_1() const { return m_playerRespawn_1; }
     const glm::ivec2& getPlayerRespawn_2() const { return m_playerRespawn_2; }
@@ -28,8 +30,8 @@ public:
     const glm::ivec2& getEnemyRespawn_2() const { return m_enemyRespawn_2; }
     const glm::ivec2& getEnemyRespawn_3() const { return m_enemyRespawn_3; }
 
-    std::vector<std::shared_ptr<IGameObject>> getObjectsInArea(const glm::vec2& bottomLeft, const glm::vec2& topRight);
-    void initPhysics();//Функция будет вызываться при создании уровня, при его загрузке и там будет инициализироваться танк
+    std::vector<std::shared_ptr<IGameObject>> getObjectsInArea(const glm::vec2& bottomLeft, const glm::vec2& topRight) const;
+    void initLevel();
 
 private:
     size_t m_widthBlocks = 0;
@@ -42,6 +44,10 @@ private:
     glm::ivec2 m_enemyRespawn_1;
     glm::ivec2 m_enemyRespawn_2;
     glm::ivec2 m_enemyRespawn_3;
-    std::vector<std::shared_ptr<IGameObject>> m_levelObjects;//для загрузки объектов карты 
-    std::shared_ptr<Tank> m_pTank;
+    std::vector<std::shared_ptr<IGameObject>> m_levelObjects;
+    std::shared_ptr<Tank> m_pTank1;//Танк, который спавнится на уровне
+    std::shared_ptr<Tank> m_pTank2;
+    //Добавление противников 
+    std::set<std::shared_ptr<Tank>> m_enemyTanks;
+    Game::EGameMode m_eGameMode;
 };

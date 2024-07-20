@@ -1,8 +1,14 @@
 #include "BrickWall.h"
-#include <iostream>
+
 #include "../../Resources/ResourceManager.h"
 #include "../../Renderer/Sprite.h"
 
+#include <iostream>
+
+/// @brief функция для определения нового состояние кирпича после попадения пули
+/// @param currentState текущее состояние кирпича
+/// @param direction направление столкновения, представленное перечислением
+/// @return возвращает состояние стены после столкновения с пулей
 BrickWall::EBrickState BrickWall::getBrickStateAfterCollision(const EBrickState currentState, const Physics::ECollisionDirection direction)
 {
     switch (currentState)
@@ -77,6 +83,11 @@ BrickWall::EBrickState BrickWall::getBrickStateAfterCollision(const EBrickState 
     }
 }
 
+/// @brief функция для вычисление ограничивающего прямоугольника в зависимости от его состояния 
+/// @param location положение стены
+/// @param eBrickState состояние стены
+/// @param size размер
+/// @return границы стены
 Physics::AABB BrickWall::getAABBForBrickState(const EBrickLocation location, const EBrickState eBrickState, const glm::vec2& size)
 {
     glm::vec2 blockOffset(0);
@@ -156,6 +167,10 @@ Physics::AABB BrickWall::getAABBForBrickState(const EBrickLocation location, con
     return {bottomLeft + blockOffset, topRight + blockOffset};
 }
 
+/// @brief Функция обрабатывает событие столкновения кирпичной стены с другим объектом в игре
+/// @param location положение стены 
+/// @param object объект с которым произошло столкновение 
+/// @param direction направление столкновения 
 void BrickWall::onCollisionCallback(const EBrickLocation location, const IGameObject& object, const Physics::ECollisionDirection direction)
 {
     if (object.getObjectType() != IGameObject::EObjectType::Bullet) return;
@@ -171,9 +186,14 @@ void BrickWall::onCollisionCallback(const EBrickLocation location, const IGameOb
     }
 };
 
-
+/// @brief конструктор инициализирует объект кирпичной стены, устанавливая его свойства
+/// @param eBrickWallType тип стены (левая, верхняя, нижняя, полная )
+/// @param position позиция в игре
+/// @param size размер
+/// @param rotation угол поворота
+/// @param layer слой рендеринга
 BrickWall::BrickWall(const EBrickWallType eBrickWallType, const glm::vec2& position, const glm::vec2& size, const float rotation, const float layer)
-    : IGameObject(IGameObject::EObjectType::Brickwall, position, size, rotation, layer)
+    : IGameObject(IGameObject::EObjectType::BrickWall, position, size, rotation, layer)
     , m_eCurrentBrickState{ EBrickState::Destroyed,
                             EBrickState::Destroyed,
                             EBrickState::Destroyed,
@@ -199,6 +219,7 @@ BrickWall::BrickWall(const EBrickWallType eBrickWallType, const glm::vec2& posit
     m_sprites[static_cast<size_t>(EBrickState::TopLeft_Bottom)]      = ResourceManager::getSprite("brickWall_TopLeft_Bottom");
     m_sprites[static_cast<size_t>(EBrickState::TopRight_Bottom)]     = ResourceManager::getSprite("brickWall_TopRight_Bottom");
 
+
     auto onCollisionCallbackTopLeft = [&](const IGameObject& object, const Physics::ECollisionDirection direction)
     {
         onCollisionCallback(EBrickLocation::TopLeft, object, direction);
@@ -218,7 +239,6 @@ BrickWall::BrickWall(const EBrickWallType eBrickWallType, const glm::vec2& posit
 
     m_brickLocationToColliderMap.fill(nullptr);
     m_colliders.reserve(4);
-
     switch (eBrickWallType)
     {
     case EBrickWallType::All:
@@ -271,6 +291,8 @@ BrickWall::BrickWall(const EBrickWallType eBrickWallType, const glm::vec2& posit
     }
 }
 
+/// @brief Функция отвечает за отрисовку отдельного кирпича кирпичной стены в игре 
+/// @param eBrickLocation тип стены (левая, верхняя, нижняя, полная )
 void BrickWall::renderBrick(const EBrickLocation eBrickLocation) const
 {
     const EBrickState state = m_eCurrentBrickState[static_cast<size_t>(eBrickLocation)];
@@ -280,6 +302,7 @@ void BrickWall::renderBrick(const EBrickLocation eBrickLocation) const
     }
 }
 
+/// @brief Функция отвечает за отрисовку всей кирпичной стены, состоящей из четырех кирпичей
 void BrickWall::render() const
 {
     renderBrick(EBrickLocation::TopLeft);
@@ -287,4 +310,3 @@ void BrickWall::render() const
     renderBrick(EBrickLocation::BottomLeft);
     renderBrick(EBrickLocation::BottomRight);
 }
-

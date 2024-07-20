@@ -1,9 +1,10 @@
 #pragma once
 #include <unordered_set>
 #include <memory>
-#include <glm/vec2.hpp>
 #include <vector>
 #include <functional>
+
+#include <glm/vec2.hpp>
 
 class IGameObject;
 class Level;
@@ -16,10 +17,11 @@ namespace Physics {
         Left,
         Right
     };
-    struct AABB {//для хранения двух точек (проверка заехал ли танк на стену)
-        AABB(const glm::vec2& _bottomLeft, glm::vec2 _topRight)
-            :bottomLeft(_bottomLeft)
-            ,topRight(_topRight)
+
+    struct AABB {
+        AABB(const glm::vec2& _bottomLeft, const glm::vec2 _topRight)
+            : bottomLeft(_bottomLeft)
+            , topRight(_topRight)
         {}
         glm::vec2 bottomLeft;
         glm::vec2 topRight;
@@ -43,6 +45,8 @@ namespace Physics {
         std::function<void(const IGameObject&, const ECollisionDirection)> onCollisionCallback;
     };
 
+
+
     class PhysicsEngine {
     public:
         ~PhysicsEngine() = delete;
@@ -60,11 +64,15 @@ namespace Physics {
         static void setCurrentLevel(std::shared_ptr<Level> pLevel);
 
     private:
-        static std::unordered_set<std::shared_ptr<IGameObject>> m_dynamicObjects;//Указатели на мои игровые объекты
+        static std::unordered_set<std::shared_ptr<IGameObject>> m_dynamicObjects;
         static std::shared_ptr<Level> m_pCurrentLevel;
+        static bool hasCollidersIntersection(const Collider& collider1, const glm::vec2& position1,
+                                             const Collider& collider2, const glm::vec2& position2);
+        static bool hasPositionIntersection(const std::shared_ptr<IGameObject>& pObject1, const glm::vec2& position1,
+                                            const std::shared_ptr<IGameObject>& pObject2, const glm::vec2& position2);
 
-        static bool hasIntersection(const Collider& collider1, const glm::vec2& position1,
-                                    const Collider& collider2, const glm::vec2& position2);
-    };    
+        static void calculateTargetPositions(std::unordered_set<std::shared_ptr<IGameObject>>& dynamicObjects, const double delta);
+        static void updatePositions(std::unordered_set<std::shared_ptr<IGameObject>>& dynamicObjects);
+    };
 }
 

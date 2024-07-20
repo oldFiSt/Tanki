@@ -3,7 +3,17 @@
 #include "../../Resources/ResourceManager.h"
 #include "../../Renderer/Sprite.h"
 
-Bullet::Bullet(const double velocity, const glm::vec2& position, const glm::vec2& size, const glm::vec2& explosionSize, const float layer)
+/// @brief конструктор инициализации пули
+/// @param velocity скорость пули
+/// @param position позиция пули в игре 
+/// @param size размер
+/// @param explosionSize размер области взрыва 
+/// @param layer слой рендеринга
+Bullet::Bullet(const double velocity,
+               const glm::vec2& position,
+               const glm::vec2& size,
+               const glm::vec2& explosionSize,
+               const float layer)
     : IGameObject(IGameObject::EObjectType::Bullet, position, size, 0.f, layer)
     , m_explosionSize(explosionSize)
     , m_explosionOffset((m_explosionSize - m_size) / 2.f)
@@ -16,8 +26,7 @@ Bullet::Bullet(const double velocity, const glm::vec2& position, const glm::vec2
     , m_eOrientation(EOrientation::Top)
     , m_maxVelocity(velocity)
     , m_isActive(false)
-    , m_isExplosion(false)  
-
+    , m_isExplosion(false)
 {
     auto onCollisionCallback = [&](const IGameObject& object, const Physics::ECollisionDirection)
     {
@@ -25,7 +34,6 @@ Bullet::Bullet(const double velocity, const glm::vec2& position, const glm::vec2
         m_isExplosion = true;
         m_explosionTimer.start(m_spriteAnimator_explosion.getTotalDuration());
     };
-    
     m_colliders.emplace_back(glm::vec2(0), m_size, onCollisionCallback);
 
     m_explosionTimer.setCallback([&]()
@@ -37,9 +45,9 @@ Bullet::Bullet(const double velocity, const glm::vec2& position, const glm::vec2
     );
 }
 
+/// @brief функция отвечает за отрисовку объекта пули в игре. 
 void Bullet::render() const
 {
-
     if (m_isExplosion)
     {
         switch (m_eOrientation)
@@ -76,11 +84,11 @@ void Bullet::render() const
             break;
         }
     }
-    
-
 
 }
 
+/// @brief функция для обновления состояния объекта пули в игре
+/// @param delta время с последнего обновления кадра
 void Bullet::update(const double delta)
 {
     if (m_isExplosion)
@@ -90,7 +98,9 @@ void Bullet::update(const double delta)
     }
 }
 
-
+/// @brief Функция отвечает за инициализацию и запуск пули в игре
+/// @param position позиция в игре
+/// @param direction направление пули
 void Bullet::fire(const glm::vec2& position, const glm::vec2& direction)
 {
     m_position = position;
@@ -106,4 +116,3 @@ void Bullet::fire(const glm::vec2& position, const glm::vec2& direction)
     m_isActive = true;
     setVelocity(m_maxVelocity);
 }
-

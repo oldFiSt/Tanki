@@ -12,10 +12,15 @@
 
 static constexpr unsigned int SCALE = 3;
 static constexpr unsigned int BLOCK_SIZE = 16;
-glm::uvec2 g_windowSize(SCALE *16 * BLOCK_SIZE, SCALE *15 * BLOCK_SIZE);
+glm::uvec2 g_windowSize(SCALE * 16 * BLOCK_SIZE, SCALE * 15 * BLOCK_SIZE);
 std::unique_ptr<Game> g_game = std::make_unique<Game>(g_windowSize);
 
 
+
+/// @brief Функция для изменения размера окошка 
+/// @param pWindow указатель на окошко, которое нужно изменить 
+/// @param width ширина на которую нужно изменить
+/// @param height высота на которую нужно изменить
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
     g_windowSize.x = width;
@@ -23,6 +28,13 @@ void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
     g_game->setWindowSize(g_windowSize);
 }
 
+
+/// @brief Функция для закрытия окна
+/// @param pWindow размер окна
+/// @param key нажатая клавиша
+/// @param scancode код сканирования клавиши
+/// @param action какое действие произошло
+/// @param mode опрделение нажатия дополнительных клавиш
 void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int mode)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -34,6 +46,7 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
 
 int main(int argc, char** argv)
 {
+    srand(time(NULL));
     /* Initialize the library */
     if (!glfwInit())
     {
@@ -46,7 +59,7 @@ int main(int argc, char** argv)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     /* Create a windowed mode window and its OpenGL context */
-    GLFWwindow* pWindow = glfwCreateWindow(g_windowSize.x, g_windowSize.y, "WarThunder", nullptr, nullptr);
+    GLFWwindow* pWindow = glfwCreateWindow(g_windowSize.x, g_windowSize.y, "TANKIIII", nullptr, nullptr);
     if (!pWindow)
     {
         std::cout << "glfwCreateWindow failed!" << std::endl;
@@ -75,6 +88,7 @@ int main(int argc, char** argv)
         ResourceManager::setExecutablePath(argv[0]);
         Physics::PhysicsEngine::init();
         g_game->init();
+
         //glfwSetWindowSize(pWindow, static_cast<int>(3 * g_game->getCurrentWidth()), static_cast<int>(3 * g_game->getCurrentHeight()));
         auto lastTime = std::chrono::high_resolution_clock::now();
 

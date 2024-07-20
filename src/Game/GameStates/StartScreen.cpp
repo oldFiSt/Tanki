@@ -9,6 +9,9 @@
 
 #include <GLFW/glfw3.h>
 
+/// @brief функция получения спрайта для объекта 
+/// @param description символ, который определяет, какой спрайт нужно получить
+/// @return указатель на спрайт, который соответствует данному объекту 
 std::shared_ptr<RenderEngine::Sprite> getSpriteForDescription(const char description)
 {
     switch (description)
@@ -51,12 +54,16 @@ std::shared_ptr<RenderEngine::Sprite> getSpriteForDescription(const char descrip
     return nullptr;
 }
 
+
+/// @brief инициализирует объект начального экрана 
+/// @param startScreenDescription  описание экрана 
+/// @param pGame указатель на объект игры 
 StartScreen::StartScreen(const std::vector<std::string>& startScreenDescription, Game* pGame)
     : m_pGame(pGame)
     , m_currentMenuSelection(0)
     , m_keyReleased(true)
     , m_menuSprite(std::make_pair(ResourceManager::getSprite("menu"), glm::vec2(11 * BLOCK_SIZE, STARTSCREEN_HEIGHT - startScreenDescription.size() * BLOCK_SIZE - MENU_HEIGHT - 5 * BLOCK_SIZE)))
-    , m_tankSprite(std::make_pair(ResourceManager::getSprite("tankSprite_right"), glm::vec2(8 * BLOCK_SIZE, m_menuSprite.second.y + 6 * BLOCK_SIZE - m_currentMenuSelection * 2 * BLOCK_SIZE)))
+    , m_tankSprite(std::make_pair(ResourceManager::getSprite("player1_yellow_tank_type1_sprite_right"), glm::vec2(8 * BLOCK_SIZE, m_menuSprite.second.y + 6 * BLOCK_SIZE - m_currentMenuSelection * 2 * BLOCK_SIZE)))
     , m_tankSpriteAnimator(m_tankSprite.first)
 {
     if (startScreenDescription.empty())
@@ -80,16 +87,21 @@ StartScreen::StartScreen(const std::vector<std::string>& startScreenDescription,
     }
 }
 
+/// @brief получение ширины начального экрана 
+/// @return возвращает ширину начального экрана 
 unsigned int StartScreen::getStateWidth() const
 {
     return STARTSCREEN_WIDTH;
 }
 
+/// @brief получение высоты начального экрана 
+/// @return возвращает высоту начального экрана 
 unsigned int StartScreen::getStateHeight() const
 {
     return STARTSCREEN_HEIGHT;
 }
 
+/// @brief для отрисовки начального экрана игры 
 void StartScreen::render() const
 {
     for (const auto& current : m_sprites)
@@ -100,15 +112,19 @@ void StartScreen::render() const
         }
     }
     m_menuSprite.first->render(m_menuSprite.second, glm::vec2(MENU_WIDTH, MENU_HEIGHT), 0.f);
-    m_tankSprite.first->render(glm::vec2(m_tankSprite.second.x ,m_tankSprite.second.y - m_currentMenuSelection * 2 * BLOCK_SIZE), glm::vec2(TANK_SIZE), 0.f, 0.f, m_tankSpriteAnimator.getCurrentFrame());
+    m_tankSprite.first->render(glm::vec2(m_tankSprite.second.x, m_tankSprite.second.y - m_currentMenuSelection * 2 * BLOCK_SIZE), glm::vec2(TANK_SIZE), 0.f, 0.f, m_tankSpriteAnimator.getCurrentFrame());
 }
 
-void StartScreen::update(const double delta) 
+/// @brief функция для обновление состояние начального экрана игры 
+/// @param delta время которое прошло с последнего обновления экрана
+void StartScreen::update(const double delta)
 {
     m_tankSpriteAnimator.update(delta);
 }
 
-void StartScreen::processInput(std::array<bool, 349>& keys)
+/// @brief функция для обработки нажатых клавиш 
+/// @param keys нажатые клавиши
+void StartScreen::processInput(const std::array<bool, 349>& keys)
 {
     if (!keys[GLFW_KEY_W] && !keys[GLFW_KEY_S])
     {
@@ -123,14 +139,14 @@ void StartScreen::processInput(std::array<bool, 349>& keys)
             --m_currentMenuSelection;
             if (m_currentMenuSelection < 0)
             {
-                m_currentMenuSelection = 2;
+                m_currentMenuSelection = 1;
             }
         }
         else if (keys[GLFW_KEY_S])
         {
             m_keyReleased = false;
             ++m_currentMenuSelection;
-            if (m_currentMenuSelection > 2)
+            if (m_currentMenuSelection > 1)
             {
                 m_currentMenuSelection = 0;
             }
@@ -142,12 +158,14 @@ void StartScreen::processInput(std::array<bool, 349>& keys)
         switch (m_currentMenuSelection)
         {
         case 0:
-            m_pGame->startNewLevel(0);
+            m_pGame->startNewLevel(0, Game::EGameMode::OnePlayer);
             break;
-        
+
+        case 1:
+            m_pGame->startNewLevel(0, Game::EGameMode::TwoPlayers);
+            break;
         default:
             break;
         }
     }
-
 }
