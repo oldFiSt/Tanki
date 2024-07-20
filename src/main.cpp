@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     /* Create a windowed mode window and its OpenGL context */
-    GLFWwindow* pWindow = glfwCreateWindow(g_windowSize.x, g_windowSize.y, "TANKIIII", nullptr, nullptr);
+    GLFWwindow* pWindow = glfwCreateWindow(g_windowSize.x, g_windowSize.y, "Танки", nullptr, nullptr);
     if (!pWindow)
     {
         std::cout << "glfwCreateWindow failed!" << std::endl;

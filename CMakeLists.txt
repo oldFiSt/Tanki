@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-set(PROJECT_NAME TANKI)
+set(PROJECT_NAME Tanki)
 project(${PROJECT_NAME})
 
 add_executable(${PROJECT_NAME} 

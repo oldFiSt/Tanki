@@ -80,7 +80,7 @@ void Game::updateViewport()
 void Game::startNewLevel(const size_t level, const EGameMode eGameMode)
 {
     m_currentLevelIndex = level;
-    int random_number = rand() % 2;
+    int random_number = rand() % 5;
     auto pLevel = std::make_shared<Level>(ResourceManager::getLevels()[random_number], eGameMode);
     m_pCurrentGameState = pLevel;
     Physics::PhysicsEngine::setCurrentLevel(pLevel);
