@@ -1,3 +1,10 @@
+## Проект протестирован на следующих устройствах:
+1. Windows 10 RTX 3050Ti Laptop i5-12450-F
+2. Windows 11 RTX 3060   Laptop i7-12700-H
+3. Windows 10 Ryzen 7 5800U
+4. Windows 11 GTX 1650   Laptop i3-10105F
+5. Linux Ryzen 7 5800U 
+6. Linux Geforce G205M Intel Core 2 DUO
 ## Сборка
 Проект протестирован на Windows и Linux. Для сборки необходимы Git Bash, Cmake и компилятор.
 Чтобы запустить проект нужно:
