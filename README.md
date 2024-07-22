@@ -1,5 +1,5 @@
 ## Сборка
-Проект протестирован на Windows. Для сборки необходимы Git Bash, Cmake и компилятор.
+Проект протестирован на Windows и Linux. Для сборки необходимы Git Bash, Cmake и компилятор.
 Чтобы запустить проект нужно:
 ```powershell
 
@@ -13,4 +13,13 @@
 8. cmake --build.
 9. После прописывания этих команд заходим в Tanki/build/bin и открываем Tanki.exe
 10. Теперь наш проект должен заработать
+```
+Для линукса: 
+
+```powershell
+1. заранее прописываем
+    sudo apt update
+    sudo apt install libgl1-mesa-dev libglu1-mesa-dev
+2. .после пункта (10) нужно дописать cd bin
+3. ./Tanki
 ```

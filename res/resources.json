@@ -93,7 +93,7 @@
 		
 		{
 			"name" 				: "tanksTextureAtlas",
-			"filePath" 			: "res/textures/new_tank.png",
+			"filePath" 			: "res/textures/tank_2.png",
 			"subTextureWidth" 	: 16,
 			"subTextureHeight" 	: 16,
 			"subTextures" : [
